@@ -19,11 +19,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, Category = Components)
+	class UPawnSensingComponent* PawnSensingComp;
+
+	UFUNCTION()
+	void OnSeenPawn(APawn* SeenPawn);
+
+	UFUNCTION()
+	void OnNoiseHeard(APawn* HeardPawn, const FVector& Location, float Volume);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
