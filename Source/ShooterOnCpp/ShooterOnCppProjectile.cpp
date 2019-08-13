@@ -62,6 +62,11 @@ void AShooterOnCppProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 		//World->SpawnActor<ABlackHole>(AfterHitClass, Loc, Rot, SpawnParam);
 //	}
 
+
+	//Make Noise
+
+	MakeNoise(1.0f, Instigator);
+
 	Destroy();
 }
 
