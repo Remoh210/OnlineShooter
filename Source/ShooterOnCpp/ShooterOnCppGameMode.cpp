@@ -16,9 +16,8 @@ AShooterOnCppGameMode::AShooterOnCppGameMode()
 	HUDClass = AShooterOnCppHUD::StaticClass();
 }
 
-void AShooterOnCppGameMode::CompleteMission(APawn* InstigatorPawn)
+void AShooterOnCppGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 {
-	UE_LOG(LogTemp, Warning, TEXT("YEEEEEEEEEEEEEEP"));
 	InstigatorPawn->DisableInput(nullptr);
-	OnMissionCompleted(InstigatorPawn);
+	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 }

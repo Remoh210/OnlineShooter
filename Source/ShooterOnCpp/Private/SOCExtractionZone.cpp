@@ -50,7 +50,7 @@ void ASOCExtractionZone::HandleOverlap(UPrimitiveComponent * OverlappedComponent
 		 AShooterOnCppGameMode* GM = Cast<AShooterOnCppGameMode>(GetWorld()->GetAuthGameMode());
 		 if (GM)
 		 {
-			 GM->CompleteMission(pawn);
+			 GM->CompleteMission(pawn, true);
 		 }
 	}
 	else

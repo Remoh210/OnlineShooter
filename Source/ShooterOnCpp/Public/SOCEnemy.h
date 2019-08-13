@@ -25,8 +25,15 @@ protected:
 	UFUNCTION()
 	void OnSeenPawn(APawn* SeenPawn);
 
+	FRotator OriginalRotation;
+
 	UFUNCTION()
 	void OnNoiseHeard(APawn* HeardPawn, const FVector& Location, float Volume);
+
+	UFUNCTION()
+	void ResetRotation();
+
+	FTimerHandle TimerHandle_ResetOrientation;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
