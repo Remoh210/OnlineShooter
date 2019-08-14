@@ -30,6 +30,9 @@ AShooterOnCppProjectile::AShooterOnCppProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AShooterOnCppProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -51,13 +54,13 @@ void AShooterOnCppProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 
 	//if (AfterHitClass != NULL)
 	//{
-		UWorld* const World = GetWorld();
+		//UWorld* const World = GetWorld();
 		
 		//const FVector Loc = FVector(0.0, 0.0, 0.0);
 		//const FRotator Rot = FRotator(0.0, 0.0, 0.0);
-		const FVector Loc = GetActorLocation();
-		const FRotator Rot = GetActorRotation();
-		FActorSpawnParameters SpawnParam;
+		//const FVector Loc = GetActorLocation();
+		//const FRotator Rot = GetActorRotation();
+		//FActorSpawnParameters SpawnParam;
 		//SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		//World->SpawnActor<ABlackHole>(AfterHitClass, Loc, Rot, SpawnParam);
 //	}
@@ -65,9 +68,13 @@ void AShooterOnCppProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherA
 
 	//Make Noise
 
-	MakeNoise(1.0f, Instigator);
+	if (Role == ROLE_Authority) {
+		MakeNoise(1.0f, Instigator);
 
-	Destroy();
+		Destroy();
+	}
+
+	
 }
 
 

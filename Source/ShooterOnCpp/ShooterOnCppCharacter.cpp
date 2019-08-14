@@ -152,6 +152,29 @@ void AShooterOnCppCharacter::SetupPlayerInputComponent(class UInputComponent* Pl
 void AShooterOnCppCharacter::OnFire()
 {
 	// try and fire a projectile
+	ServerFire();
+
+	// try and play the sound if specified
+	if (FireSound != NULL)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+
+	// try and play a firing animation if specified
+	if (FireAnimation != NULL)
+	{
+		// Get the animation object for the arms mesh
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+		if (AnimInstance != NULL)
+		{
+			AnimInstance->Montage_Play(FireAnimation, 1.f);
+		}
+	}
+}
+
+void AShooterOnCppCharacter::ServerFire_Implementation()
+{
+
 	if (ProjectileBoltClass != NULL && ProjectileFireClass != NULL)
 	{
 		UWorld* const World = GetWorld();
@@ -198,23 +221,12 @@ void AShooterOnCppCharacter::OnFire()
 			}
 		}
 	}
+	
+}
 
-	// try and play the sound if specified
-	if (FireSound != NULL)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != NULL)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != NULL)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
-	}
+bool AShooterOnCppCharacter::ServerFire_Validate()
+{
+	return true;
 }
 
 void AShooterOnCppCharacter::OnResetVR()
@@ -328,4 +340,18 @@ bool AShooterOnCppCharacter::EnableTouchscreenMovement(class UInputComponent* Pl
 	}
 	
 	return false;
+}
+
+void AShooterOnCppCharacter::Tick(float DeltaTime)
+{
+	if(!IsLocallyControlled())
+	{
+		Super::Tick(DeltaTime);
+
+		FRotator NewRot = FirstPersonCameraComponent->RelativeRotation;
+		NewRot.Pitch = RemoteViewPitch * 360.f / 255.f;
+
+		FirstPersonCameraComponent->SetRelativeRotation(NewRot);
+	}
+
 }

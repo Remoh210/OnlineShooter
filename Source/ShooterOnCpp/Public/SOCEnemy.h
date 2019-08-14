@@ -6,6 +6,14 @@
 #include "GameFramework/Character.h"
 #include "SOCEnemy.generated.h"
 
+UENUM(BlueprintType)
+enum class EAIState : uint8
+{
+	Idle,
+	Suspicios,
+	Alerted
+};
+
 UCLASS()
 class SHOOTERONCPP_API ASOCEnemy : public ACharacter
 {
@@ -22,8 +30,25 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Components)
 	class UPawnSensingComponent* PawnSensingComp;
 
+	UPROPERTY(EditInstanceOnly, Category = AI)
+	bool bPatrol;
+
+	
+	//UPROPERTY(EditInstanceOnly, Category = AI, meta = (EditCondition = "bPatrol")
+	UPROPERTY(EditInstanceOnly, Category = AI, meta = (EditCondition = "bPatrol"))
+	AActor* FirstControlPoint;
+
+	UPROPERTY(EditInstanceOnly, Category = AI, meta = (EditCondition = "bPatrol"))
+	AActor* SecondPatrolPoint;
+
+	AActor* CurrentPatrolPoint;
+
+	class UNavigationSystemV1* NavigationArea;
+
 	UFUNCTION()
 	void OnSeenPawn(APawn* SeenPawn);
+
+	void MoveToNextPatrolPont();
 
 	FRotator OriginalRotation;
 
@@ -34,6 +59,13 @@ protected:
 	void ResetRotation();
 
 	FTimerHandle TimerHandle_ResetOrientation;
+
+	EAIState GuardState;
+
+	void SetGuardState(EAIState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnStateChanged(EAIState NewState);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
