@@ -95,7 +95,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EProjectileType ProjectileType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	bool bIsCarryingObjective;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI)

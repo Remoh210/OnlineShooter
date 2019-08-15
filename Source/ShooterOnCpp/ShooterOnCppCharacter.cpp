@@ -12,6 +12,7 @@
 #include "MotionControllerComponent.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -354,4 +355,14 @@ void AShooterOnCppCharacter::Tick(float DeltaTime)
 		FirstPersonCameraComponent->SetRelativeRotation(NewRot);
 	}
 
+}
+
+
+
+void AShooterOnCppCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AShooterOnCppCharacter, bIsCarryingObjective);
+
+	//DOREPLIFETIME_CONDITION(AShooterOnCppCharacter, bIsCarryingObjective, COND_OwnerOnly);
 }

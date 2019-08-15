@@ -9,6 +9,7 @@
 #include "ShooterOnCppGameMode.h"
 #include "NavigationSystem.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
+#include "UnrealNetwork.h"
 
 
 
@@ -129,9 +130,21 @@ void ASOCEnemy::SetGuardState(EAIState NewState)
 
 	GuardState = NewState;
 
+	OnRep_GuardState();
+	//OnStateChanged(GuardState);
+}
+
+void ASOCEnemy::OnRep_GuardState()
+{
 	OnStateChanged(GuardState);
 }
 
+
+void ASOCEnemy::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ASOCEnemy, GuardState);
+}
 
 
 // Called every frame

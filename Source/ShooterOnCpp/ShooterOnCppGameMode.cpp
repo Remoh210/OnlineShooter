@@ -4,6 +4,7 @@
 #include "ShooterOnCppHUD.h"
 #include "ShooterOnCppCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "SOC_BPGameState.h"
 
 AShooterOnCppGameMode::AShooterOnCppGameMode()
 	: Super()
@@ -14,10 +15,20 @@ AShooterOnCppGameMode::AShooterOnCppGameMode()
 
 	// use our custom HUD class
 	HUDClass = AShooterOnCppHUD::StaticClass();
+
+	//Important!!!!!
+	GameStateClass = ASOC_BPGameState::StaticClass();
 }
 
 void AShooterOnCppGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 {
-	InstigatorPawn->DisableInput(nullptr);
+	//InstigatorPawn->DisableInput(nullptr);
+
+	ASOC_BPGameState* GS = GetGameState<ASOC_BPGameState>();
+	if (GS)
+	{
+		GS->MulticastOnMissionComplete(InstigatorPawn, bMissionSuccess);
+	}
+
 	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 }

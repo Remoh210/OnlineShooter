@@ -22,6 +22,8 @@ ASOCGameObjective::ASOCGameObjective()
 	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComp->SetupAttachment(MeshComp);
 
+	SetReplicates(true);
+
 }
 
 // Called when the game starts or when spawned
@@ -59,15 +61,21 @@ void ASOCGameObjective::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	AShooterOnCppCharacter* SOCChar = Cast<AShooterOnCppCharacter>(OtherActor);
-	if (SOCChar)
+	PlayEffects();
+	PlaySound();
+
+	if(Role == ROLE_Authority)
 	{
-		PlayEffects();
-		PlaySound();
-		SOCChar->bIsCarryingObjective = true;
-		Destroy();
+		AShooterOnCppCharacter* SOCChar = Cast<AShooterOnCppCharacter>(OtherActor);
+		if (SOCChar)
+		{
+			
+			SOCChar->bIsCarryingObjective = true;
+			Destroy();
+		}
+
 	}
-	
+
 
 }
 
